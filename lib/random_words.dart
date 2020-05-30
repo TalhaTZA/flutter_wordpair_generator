@@ -47,11 +47,40 @@ class _RandomWordsState extends State<RandomWords> {
     );
   }
 
+  void _pushSaved() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      final Iterable<ListTile> _tiles =
+          _randomWordPairsSaved.map((WordPair pair) {
+        return ListTile(
+          title: Text(
+            pair.asPascalCase,
+            style: TextStyle(fontSize: 16.0),
+          ),
+        );
+      });
+
+      final List<Widget> _divided =
+          ListTile.divideTiles(tiles: _tiles, context: context).toList();
+
+      return Scaffold(
+        appBar: AppBar(title: Text('Saved Word Pairs')),
+        body: ListView(children: _divided),
+      );
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Word Pair Genarator'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.list),
+            onPressed: _pushSaved,
+          )
+        ],
       ),
       body: _buildList(),
     );
